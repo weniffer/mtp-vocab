@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MTP 商談單字對照表</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f6f2;
+    --surface: #ffffff;
+    --surface-alt: #f0ede6;
+    --border: #ddd9d0;
+    --border-strong: #bbb6ac;
+    --text-primary: #1a1916;
+    --text-secondary: #5a5750;
+    --text-muted: #9a9690;
+    --accent: #2d6a4f;
+    --accent-bg: #eaf4ee;
+    --accent-border: #a8d5b8;
+    --accent-text: #1e4d38;
+    --medical-bg: #fff7ed;
+    --medical-border: #fbc97a;
+    --medical-text: #7c4b10;
+    --exam-bg: #fef2f2;
+    --exam-border: #fca5a5;
+    --exam-text: #991b1b;
+    --platform-bg: #eff6ff;
+    --platform-border: #93c5fd;
+    --platform-text: #1e3a8a;
+    --biz-bg: #fefce8;
+    --biz-border: #fde047;
+    --biz-text: #713f12;
+    --nego-bg: #f5f3ff;
+    --nego-border: #c4b5fd;
+    --nego-text: #4c1d95;
+    --new-bg: #fee2e2;
+    --new-border: #fca5a5;
+    --new-text: #991b1b;
+    --radius: 6px;
+    --shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans TC', 'Noto Sans JP', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  header {
+    background: var(--accent);
+    color: #fff;
+    padding: 1.5rem 2rem 1.25rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  header .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  header h1 {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    line-height: 1.3;
+  }
+  header .subtitle {
+    font-size: 12px;
+    opacity: 0.75;
+    margin-top: 2px;
+  }
+  header .count-badge {
+    margin-left: auto;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  /* Main */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 3rem;
+  }
+
+  /* Controls */
+  .controls {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .search-row {
+    position: relative;
+  }
+  .search-row svg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+  .search-row input {
+    width: 100%;
+    padding: 0 12px 0 34px;
+    height: 38px;
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .search-row input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(45,106,79,0.12);
+  }
+  .search-row input::placeholder { color: var(--text-muted); }
+
+  .tag-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .tag-row label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-right: 2px;
+  }
+  .tag-btn {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 0.5px solid var(--border-strong);
+    background: var(--bg);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .tag-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+  .tag-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 500; }
+
+  /* Stats bar */
+  .stats-bar {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    padding-left: 2px;
+    height: 18px;
+  }
+
+  /* Table */
+  .table-wrap {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  thead tr {
+    background: var(--surface-alt);
+    border-bottom: 0.5px solid var(--border-strong);
+  }
+  thead th {
+    padding: 9px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: left;
+  }
+  th:nth-child(1) { width: 30%; }
+  th:nth-child(2) { width: 22%; }
+  th:nth-child(3) { width: 48%; }
+
+  tbody tr {
+    border-bottom: 0.5px solid var(--border);
+    transition: background 0.1s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface-alt); }
+
+  td {
+    padding: 11px 14px;
+    vertical-align: top;
+  }
+
+  .jp {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    line-height: 1.4;
+  }
+  .reading {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    letter-spacing: 0.02em;
+  }
+  .zh {
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .note {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 10px;
+    border: 0.5px solid;
+    vertical-align: middle;
+    line-height: 1.6;
+    white-space: nowrap;
+  }
+  .badge-medical   { background: var(--medical-bg);   border-color: var(--medical-border);   color: var(--medical-text); }
+  .badge-exam      { background: var(--exam-bg);      border-color: var(--exam-border);      color: var(--exam-text); }
+  .badge-platform  { background: var(--platform-bg);  border-color: var(--platform-border);  color: var(--platform-text); }
+  .badge-biz       { background: var(--biz-bg);       border-color: var(--biz-border);       color: var(--biz-text); }
+  .badge-negotiation { background: var(--nego-bg);    border-color: var(--nego-border);      color: var(--nego-text); }
+  .badge-new       { background: var(--new-bg);       border-color: var(--new-border);       color: var(--new-text); }
+
+  /* Empty state */
+  .empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+  .empty strong { display: block; font-size: 16px; color: var(--text-secondary); margin-bottom: 6px; }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1rem;
+    font-size: 11px;
+    color: var(--text-muted);
+    align-items: center;
+  }
+  .legend span { margin-right: 2px; }
+
+  @media (max-width: 600px) {
+    header { padding: 1rem; }
+    main { padding: 1rem 0.75rem 2rem; }
+    th:nth-child(1) { width: 38%; }
+    th:nth-child(2) { width: 28%; }
+    th:nth-child(3) { width: 34%; }
+    td { padding: 9px 10px; }
+    .jp { font-size: 13px; }
+    .zh { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <h1>MTP 商談単語対照表</h1>
+      <div class="subtitle">株式会社コノミティ・台湾商談用 ／ 日中対照</div>
+    </div>
+    <div class="count-badge" id="header-count">— 個</div>
+  </div>
+</header>
+
+<main>
+  <div class="controls">
+    <div class="search-row">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search" placeholder="日文・中文・讀音で検索 / 搜尋日文、中文或讀音…" oninput="render()" autocomplete="off" />
+    </div>
+    <div class="tag-row">
+      <label>分類：</label>
+      <button class="tag-btn active" data-tag="all"         onclick="setTag('all',this)">全部</button>
+      <button class="tag-btn"        data-tag="medical"     onclick="setTag('medical',this)">🏥 醫療</button>
+      <button class="tag-btn"        data-tag="exam"        onclick="setTag('exam',this)">🔬 検査項目</button>
+      <button class="tag-btn"        data-tag="platform"    onclick="setTag('platform',this)">💻 平台/系統</button>
+      <button class="tag-btn"        data-tag="biz"         onclick="setTag('biz',this)">🤝 商務合作</button>
+      <button class="tag-btn"        data-tag="negotiation" onclick="setTag('negotiation',this)">💬 商談用語</button>
+    </div>
+  </div>
+
+  <div class="stats-bar" id="stats"></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>日文</th>
+          <th>中文</th>
+          <th>說明／例句</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="legend">
+    <span>分類標籤：</span>
+    <span class="badge badge-medical">醫療</span>
+    <span class="badge badge-exam">検査</span>
+    <span class="badge badge-platform">平台</span>
+    <span class="badge badge-biz">商務</span>
+    <span class="badge badge-negotiation">商談</span>
+    <span class="badge badge-new">NEW</span>
+    <span style="margin-left:4px">NEW = 從 Conomity 網頁補充</span>
+  </div>
+</main>
+
+<script>
+const vocab = [
+  { jp:"医療ツーリズム", rd:"いりょうツーリズム", zh:"醫療旅遊", note:"本次商談核心主題", tag:"medical", isnew:false },
+  { jp:"訪日医療", rd:"ほうにちいりょう", zh:"訪日就醫", note:"來日本接受醫療服務", tag:"medical", isnew:false },
+  { jp:"再生医療", rd:"さいせいいりょう", zh:"再生醫療", note:"幹細胞治療等高端醫療", tag:"medical", isnew:false },
+  { jp:"がん治療", rd:"がんちりょう", zh:"癌症治療", note:"腫瘤科治療", tag:"medical", isnew:false },
+  { jp:"高度医療", rd:"こうどいりょう", zh:"高度醫療／先進醫療", note:"高端專科醫療", tag:"medical", isnew:false },
+  { jp:"人間ドック", rd:"にんげんドック", zh:"全身健康檢查", note:"日本常見健檢套餐", tag:"medical", isnew:false },
+  { jp:"医療コーディネーター", rd:"いりょうコーディネーター", zh:"醫療協調員", note:"安排就醫流程的中間人", tag:"medical", isnew:false },
+  { jp:"医療通訳", rd:"いりょうつうやく", zh:"醫療口譯員", note:"在醫療現場擔任翻譯", tag:"medical", isnew:false },
+  { jp:"医療ビザ", rd:"いりょうビザ", zh:"醫療簽證", note:"赴日就醫所需簽證", tag:"medical", isnew:false },
+  { jp:"身元保証機関", rd:"みもとほしょうきかん", zh:"身分保證機構", note:"Conomity 的官方登錄資格", tag:"medical", isnew:false },
+  { jp:"登録旅行会社", rd:"とうろくりょこうがいしゃ", zh:"登記旅行社", note:"有旅行業登錄資格", tag:"medical", isnew:false },
+  { jp:"入院", rd:"にゅういん", zh:"住院", note:"長期治療時需要住院", tag:"medical", isnew:false },
+  { jp:"通院", rd:"つういん", zh:"門診／回診", note:"不住院、定期來看診", tag:"medical", isnew:false },
+  { jp:"病歴", rd:"びょうれき", zh:"病歷", note:"送交日本醫院審核用", tag:"medical", isnew:false },
+  { jp:"カルテ", rd:"カルテ", zh:"病歷卡", note:"德語借詞，日本醫療常用", tag:"medical", isnew:false },
+  { jp:"治療計画", rd:"ちりょうけいかく", zh:"治療計畫", note:"「治療計画に合わせて手配」", tag:"medical", isnew:true },
+  { jp:"疾患", rd:"しっかん", zh:"疾病／病患", note:"「万一疾患が見つかった場合」", tag:"medical", isnew:true },
+  { jp:"早期発見", rd:"そうきはっけん", zh:"早期發現", note:"健檢的主要目的", tag:"medical", isnew:true },
+  { jp:"腫瘍", rd:"しゅよう", zh:"腫瘤", note:"良悪性の判断 → 良性／惡性判斷", tag:"medical", isnew:true },
+  { jp:"良性・悪性", rd:"りょうせい・あくせい", zh:"良性／惡性", note:"腫瘤判斷結果", tag:"medical", isnew:true },
+  { jp:"転移", rd:"てんい", zh:"（癌症）轉移", note:"「がんの転移を発見」", tag:"medical", isnew:true },
+  { jp:"再発", rd:"さいはつ", zh:"復發", note:"「がんの再発確認」", tag:"medical", isnew:true },
+  { jp:"診断", rd:"しんだん", zh:"診斷", note:"「読影で早期診断」", tag:"medical", isnew:true },
+  { jp:"読影", rd:"どくえい", zh:"影像判讀", note:"醫師判讀影像檢查結果", tag:"medical", isnew:true },
+  { jp:"総合病院", rd:"そうごうびょういん", zh:"綜合醫院", note:"Conomity 介紹的醫院類型", tag:"medical", isnew:true },
+  { jp:"受診", rd:"じゅしん", zh:"就診／受診", note:"「日本で受診する」", tag:"medical", isnew:true },
+  { jp:"同伴者", rd:"どうはんしゃ", zh:"陪同人員", note:"患者的家屬或隨行者", tag:"medical", isnew:true },
+  { jp:"免震・耐震", rd:"めんしん・たいしん", zh:"免震・耐震（防震設計）", note:"介紹醫院設施時提及", tag:"medical", isnew:true },
+  { jp:"PET-CT検査", rd:"ペットシーティーけんさ", zh:"PET-CT全身癌症篩檢", note:"最主力的檢查項目，全身掃描30分鐘", tag:"exam", isnew:false },
+  { jp:"脳ドック", rd:"のうドック", zh:"腦部健檢", note:"MRI 腦部精密檢查", tag:"exam", isnew:true },
+  { jp:"MRI検査", rd:"エムアールアイけんさ", zh:"MRI 核磁共振檢查", note:"無輻射影像檢查", tag:"exam", isnew:true },
+  { jp:"内視鏡検査", rd:"ないしきょうけんさ", zh:"內視鏡（胃鏡）", note:"食道・胃・十二指腸觀察", tag:"exam", isnew:true },
+  { jp:"超音波検査", rd:"ちょうおんぱけんさ", zh:"超音波檢查", note:"甲狀腺・腹部・乳腺等", tag:"exam", isnew:true },
+  { jp:"腫瘍マーカー", rd:"しゅようマーカー", zh:"腫瘤標記（腫瘤指數）", note:"血液癌症指數檢查", tag:"exam", isnew:true },
+  { jp:"骨密度", rd:"こつみつど", zh:"骨密度", note:"骨骼健康檢查項目", tag:"exam", isnew:true },
+  { jp:"心電図", rd:"しんでんず", zh:"心電圖", note:"循環器系檢查，安靜時測量", tag:"exam", isnew:true },
+  { jp:"動脈硬化度検査", rd:"どうみゃくこうかどけんさ", zh:"動脈硬化檢查", note:"心血管健康評估", tag:"exam", isnew:true },
+  { jp:"生検", rd:"せいけん", zh:"切片／活組織檢查", note:"「組織の一部を採取して検査」", tag:"exam", isnew:true },
+  { jp:"色素散布", rd:"しきそさんぷ", zh:"染色劑塗布", note:"內視鏡中用於確認病灶範圍", tag:"exam", isnew:true },
+  { jp:"クラウドプラットフォーム", rd:"クラウドプラットフォーム", zh:"雲端平台", note:"MTP 的產品形態", tag:"platform", isnew:false },
+  { jp:"デジタル化", rd:"デジタルか", zh:"數位化", note:"業務流程數位化，MTP 核心訴求", tag:"platform", isnew:false },
+  { jp:"一気通貫", rd:"いっきつうかん", zh:"一條龍／全程整合", note:"MTP 核心賣點", tag:"platform", isnew:false },
+  { jp:"情報管理", rd:"じょうほうかんり", zh:"資訊管理", note:"目前人工作業的最大痛點", tag:"platform", isnew:false },
+  { jp:"ワークフロー", rd:"ワークフロー", zh:"工作流程", note:"", tag:"platform", isnew:false },
+  { jp:"システム連携", rd:"システムれんけい", zh:"系統串接／整合", note:"與其他系統的介接", tag:"platform", isnew:false },
+  { jp:"導入", rd:"どうにゅう", zh:"導入／採用", note:"「MTPを導入する」", tag:"platform", isnew:false },
+  { jp:"運用", rd:"うんよう", zh:"實際運作／營運", note:"「システムの運用」", tag:"platform", isnew:false },
+  { jp:"デモンストレーション", rd:"デモンストレーション", zh:"示範展示（Demo）", note:"「デモをご覧いただく」", tag:"platform", isnew:false },
+  { jp:"手配", rd:"てはい", zh:"安排／處理", note:"「宿泊・観光・通訳ガイドを手配」", tag:"platform", isnew:true },
+  { jp:"行程管理", rd:"こうていかんり", zh:"行程管理", note:"MTP 的功能之一", tag:"platform", isnew:true },
+  { jp:"書類作成", rd:"しょるいさくせい", zh:"文件製作", note:"「治療に関する書類作成」", tag:"platform", isnew:true },
+  { jp:"エージェント", rd:"エージェント", zh:"代理商", note:"台灣旅行社或醫療協調員", tag:"biz", isnew:false },
+  { jp:"旅行会社", rd:"りょこうがいしゃ", zh:"旅行社", note:"台灣對象之一", tag:"biz", isnew:false },
+  { jp:"代理店", rd:"だいりてん", zh:"代理店", note:"「代理店を確保したい」", tag:"biz", isnew:false },
+  { jp:"収益最大化", rd:"しゅうえきさいだいか", zh:"收益最大化", note:"導入 MTP 的主要效益", tag:"biz", isnew:false },
+  { jp:"業務効率化", rd:"ぎょうむこうりつか", zh:"業務效率化", note:"", tag:"biz", isnew:false },
+  { jp:"受入体制", rd:"うけいれたいせい", zh:"承接體制", note:"日本端的配套支援", tag:"biz", isnew:false },
+  { jp:"提携", rd:"ていけい", zh:"合作夥伴關係", note:"「医療機関と提携する」", tag:"biz", isnew:false },
+  { jp:"富裕層", rd:"ふゆうそう", zh:"富裕階層", note:"Conomity 的目標客群", tag:"biz", isnew:true },
+  { jp:"空港送迎", rd:"くうこうそうげい", zh:"機場接送", note:"旅遊配套服務之一", tag:"biz", isnew:true },
+  { jp:"宿泊手配", rd:"しゅくはくてはい", zh:"住宿安排", note:"", tag:"biz", isnew:true },
+  { jp:"観光", rd:"かんこう", zh:"觀光旅遊", note:"「検診＋観光」套裝行程", tag:"biz", isnew:true },
+  { jp:"通訳ガイド", rd:"つうやくガイド", zh:"隨行翻譯導遊", note:"現場口譯兼導覽", tag:"biz", isnew:true },
+  { jp:"費用対効果", rd:"ひようたいこうか", zh:"費效比（C/P值）", note:"「費用対効果はいかがですか」", tag:"biz", isnew:false },
+  { jp:"ご提案", rd:"ごていあん", zh:"提案", note:"「本日はご提案させていただきます」", tag:"negotiation", isnew:false },
+  { jp:"ご検討", rd:"ごけんとう", zh:"考慮評估", note:"「ぜひご検討ください」", tag:"negotiation", isnew:false },
+  { jp:"ご質問", rd:"ごしつもん", zh:"提問", note:"「ご質問はございますか」", tag:"negotiation", isnew:false },
+  { jp:"ご確認", rd:"ごかくにん", zh:"確認", note:"「後ほどご確認いただけますか」", tag:"negotiation", isnew:false },
+  { jp:"先行ご紹介", rd:"せんこうごしょうかい", zh:"優先搶先介紹", note:"產品未公開前的優先展示", tag:"negotiation", isnew:false },
+  { jp:"正式リリース前", rd:"せいしきリリースまえ", zh:"正式發布前", note:"說明網站尚未公開的理由", tag:"negotiation", isnew:false },
+  { jp:"弊社", rd:"へいしゃ", zh:"敝公司", note:"自稱公司的謙虛說法", tag:"negotiation", isnew:false },
+  { jp:"貴社", rd:"きしゃ", zh:"貴公司", note:"對對方公司的尊稱", tag:"negotiation", isnew:false },
+  { jp:"おっしゃる通りです", rd:"おっしゃるとおりです", zh:"您說得對／正是如此", note:"附和對方意見的萬用句", tag:"negotiation", isnew:false },
+  { jp:"少々お時間をいただけますか", rd:"しょうしょうおじかんをいただけますか", zh:"可以給我一點時間嗎", note:"口譯需要確認時使用", tag:"negotiation", isnew:false },
+  { jp:"持ち帰って確認します", rd:"もちかえってかくにんします", zh:"帶回去確認後回覆", note:"無法當場回答時的緩衝句", tag:"negotiation", isnew:false },
+  { jp:"条件面", rd:"じょうけんめん", zh:"條件方面", note:"「条件面についてはいかがでしょうか」", tag:"negotiation", isnew:false },
+  { jp:"今後ともよろしくお願いします", rd:"こんごともよろしくおねがいします", zh:"今後也請多多關照", note:"商談結束的標準禮貌用語", tag:"negotiation", isnew:false },
+];
+
+const tagLabels = {
+  medical: '醫療', exam: '検査', platform: '平台', biz: '商務', negotiation: '商談'
+};
+
+let activeTag = 'all';
+
+function setTag(tag, el) {
+  activeTag = tag;
+  document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function badgeHTML(tag) {
+  const cls = { medical:'badge-medical', exam:'badge-exam', platform:'badge-platform', biz:'badge-biz', negotiation:'badge-negotiation' };
+  return `<span class="badge ${cls[tag]}">${tagLabels[tag]}</span>`;
+}
+
+function escapeHTML(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function render() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const filtered = vocab.filter(v => {
+    const matchTag = activeTag === 'all' || v.tag === activeTag;
+    const matchQ = !q || v.jp.toLowerCase().includes(q) || v.zh.includes(q) || v.rd.toLowerCase().includes(q) || v.note.includes(q);
+    return matchTag && matchQ;
+  });
+
+  const newCount = filtered.filter(v => v.isnew).length;
+  const statsEl = document.getElementById('stats');
+  const headerCount = document.getElementById('header-count');
+  statsEl.textContent = filtered.length + ' 個單字（其中 ' + newCount + ' 個為網頁補充）';
+  headerCount.textContent = filtered.length + ' 個';
+
+  const tbody = document.getElementById('tbody');
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="3"><div class="empty"><strong>找不到相符單字</strong>請嘗試其他關鍵字</div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(v => `
+    <tr>
+      <td>
+        <div class="jp">
+          ${escapeHTML(v.jp)}
+          ${badgeHTML(v.tag)}
+          ${v.isnew ? '<span class="badge badge-new">NEW</span>' : ''}
+        </div>
+        <div class="reading">${escapeHTML(v.rd)}</div>
+      </td>
+      <td><div class="zh">${escapeHTML(v.zh)}</div></td>
+      <td><div class="note">${escapeHTML(v.note)}</div></td>
+    </tr>
+  `).join('');
+}
+
+render();
+</script>
+</body>
+</html>
