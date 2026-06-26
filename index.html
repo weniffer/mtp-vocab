@@ -35,6 +35,9 @@
     --nego-bg: #f5f3ff;
     --nego-border: #c4b5fd;
     --nego-text: #4c1d95;
+    --exosome-bg: #fdf4ff;
+    --exosome-border: #e879f9;
+    --exosome-text: #86198f;
     --new-bg: #fee2e2;
     --new-border: #fca5a5;
     --new-text: #991b1b;
@@ -260,6 +263,7 @@
   .badge-platform  { background: var(--platform-bg);  border-color: var(--platform-border);  color: var(--platform-text); }
   .badge-biz       { background: var(--biz-bg);       border-color: var(--biz-border);       color: var(--biz-text); }
   .badge-negotiation { background: var(--nego-bg);    border-color: var(--nego-border);      color: var(--nego-text); }
+  .badge-exosome     { background: var(--exosome-bg); border-color: var(--exosome-border);   color: var(--exosome-text); }
   .badge-new       { background: var(--new-bg);       border-color: var(--new-border);       color: var(--new-text); }
 
   /* Empty state */
@@ -320,6 +324,7 @@
       <button class="tag-btn"        data-tag="exam"        onclick="setTag('exam',this)">🔬 検査項目</button>
       <button class="tag-btn"        data-tag="platform"    onclick="setTag('platform',this)">💻 平台/系統</button>
       <button class="tag-btn"        data-tag="biz"         onclick="setTag('biz',this)">🤝 商務合作</button>
+      <button class="tag-btn"        data-tag="exosome"     onclick="setTag('exosome',this)">🧬 外泌體</button>
       <button class="tag-btn"        data-tag="negotiation" onclick="setTag('negotiation',this)">💬 商談用語</button>
     </div>
   </div>
@@ -346,8 +351,9 @@
     <span class="badge badge-platform">平台</span>
     <span class="badge badge-biz">商務</span>
     <span class="badge badge-negotiation">商談</span>
+    <span class="badge badge-exosome">外泌體</span>
     <span class="badge badge-new">NEW</span>
-    <span style="margin-left:4px">NEW = 從 Conomity 網頁補充</span>
+    <span style="margin-left:4px">NEW = 從 Conomity 網頁 / Aexo Bio 補充</span>
   </div>
 </main>
 
@@ -381,6 +387,31 @@ const vocab = [
   { jp:"受診", rd:"じゅしん", zh:"就診／受診", note:"「日本で受診する」", tag:"medical", isnew:true },
   { jp:"同伴者", rd:"どうはんしゃ", zh:"陪同人員", note:"患者的家屬或隨行者", tag:"medical", isnew:true },
   { jp:"免震・耐震", rd:"めんしん・たいしん", zh:"免震・耐震（防震設計）", note:"介紹醫院設施時提及", tag:"medical", isnew:true },
+  { jp:"エクソソーム", rd:"エクソソーム", zh:"外泌體", note:"Exosome，細胞分泌的奈米囊泡", tag:"exosome", isnew:true },
+  { jp:"細胞外小胞", rd:"さいぼうがいしょうほう", zh:"細胞外囊泡（EV）", note:"外泌體的正式學術名稱", tag:"exosome", isnew:true },
+  { jp:"ナノ粒子", rd:"ナノりゅうし", zh:"奈米粒子", note:"外泌體的尺寸約40〜150nm", tag:"exosome", isnew:true },
+  { jp:"幹細胞", rd:"かんさいぼう", zh:"幹細胞", note:"外泌體的主要來源之一", tag:"exosome", isnew:true },
+  { jp:"臍帯幹細胞", rd:"さいたいかんさいぼう", zh:"臍帶幹細胞", note:"人類臍帯來源，相容性高", tag:"exosome", isnew:true },
+  { jp:"間葉系幹細胞", rd:"かんようけいかんさいぼう", zh:"間葉幹細胞（MSC）", note:"常見外泌體來源細胞", tag:"exosome", isnew:true },
+  { jp:"抗老化", rd:"こうろうか", zh:"抗老化／抗衰老", note:"Aexo Bio 主打方向", tag:"exosome", isnew:true },
+  { jp:"細胞間コミュニケーション", rd:"さいぼうかんコミュニケーション", zh:"細胞間通訊", note:"外泌體的核心功能", tag:"exosome", isnew:true },
+  { jp:"精製・純化", rd:"せいせい・じゅんか", zh:"純化／精製", note:"外泌體品質關鍵工程", tag:"exosome", isnew:true },
+  { jp:"純度", rd:"じゅんど", zh:"純度", note:"「純度99.99%」等品質指標", tag:"exosome", isnew:true },
+  { jp:"研究用途", rd:"けんきゅうようと", zh:"研究用途", note:"Aexo Bio 目前定位：僅供研究", tag:"exosome", isnew:true },
+  { jp:"臨床試験", rd:"りんしょうしけん", zh:"臨床試驗", note:"「現在臨床試験は行っていない」", tag:"exosome", isnew:true },
+  { jp:"再生医学への応用", rd:"さいせいいがくへのおうよう", zh:"再生醫學應用", note:"外泌體未來發展方向", tag:"exosome", isnew:true },
+  { jp:"医薬品承認", rd:"いやくひんしょうにん", zh:"藥品核准／上市許可", note:"外泌體作為藥品的法規門檻", tag:"exosome", isnew:true },
+  { jp:"規制・法規制", rd:"きせい・ほうきせい", zh:"法規限制", note:"各國外泌體法規不同，日台差異大", tag:"exosome", isnew:true },
+  { jp:"化粧品原料", rd:"けしょうひんげんりょう", zh:"化妝品原料", note:"目前台灣合法應用的管道之一", tag:"exosome", isnew:true },
+  { jp:"miRNA", rd:"マイクロアールエヌエー", zh:"微小RNA（miRNA）", note:"外泌體攜帶的生物活性物質", tag:"exosome", isnew:true },
+  { jp:"ドラッグデリバリー", rd:"ドラッグデリバリー", zh:"藥物遞送", note:"外泌體作為藥物載體的應用", tag:"exosome", isnew:true },
+  { jp:"バイオマーカー", rd:"バイオマーカー", zh:"生物標記物", note:"外泌體用於疾病早期診斷", tag:"exosome", isnew:true },
+  { jp:"知的財産権", rd:"ちてきざいさんけん", zh:"智慧財產權", note:"技術合作時重要議題", tag:"exosome", isnew:true },
+  { jp:"特許技術", rd:"とっきょぎじゅつ", zh:"專利技術", note:"「弊社の特許技術をご紹介します」", tag:"exosome", isnew:true },
+  { jp:"独自技術", rd:"どくじぎじゅつ", zh:"自有技術／獨家技術", note:"區別競品的核心賣點", tag:"exosome", isnew:true },
+  { jp:"共同研究", rd:"きょうどうけんきゅう", zh:"共同研究", note:"台日雙方合作模式之一", tag:"exosome", isnew:true },
+  { jp:"技術移転", rd:"ぎじゅついてん", zh:"技術移轉", note:"將技術授權給日方使用", tag:"exosome", isnew:true },
+  { jp:"ライセンス契約", rd:"ライセンスけいやく", zh:"授權合約", note:"技術或產品授權的合約形式", tag:"exosome", isnew:true },
   { jp:"PET-CT検査", rd:"ペットシーティーけんさ", zh:"PET-CT全身癌症篩檢", note:"最主力的檢查項目，全身掃描30分鐘", tag:"exam", isnew:false },
   { jp:"脳ドック", rd:"のうドック", zh:"腦部健檢", note:"MRI 腦部精密檢查", tag:"exam", isnew:true },
   { jp:"MRI検査", rd:"エムアールアイけんさ", zh:"MRI 核磁共振檢查", note:"無輻射影像檢查", tag:"exam", isnew:true },
@@ -433,7 +464,7 @@ const vocab = [
 ];
 
 const tagLabels = {
-  medical: '醫療', exam: '検査', platform: '平台', biz: '商務', negotiation: '商談'
+  medical: '醫療', exam: '検査', platform: '平台', biz: '商務', negotiation: '商談', exosome: '外泌體'
 };
 
 let activeTag = 'all';
@@ -446,7 +477,7 @@ function setTag(tag, el) {
 }
 
 function badgeHTML(tag) {
-  const cls = { medical:'badge-medical', exam:'badge-exam', platform:'badge-platform', biz:'badge-biz', negotiation:'badge-negotiation' };
+  const cls = { medical:'badge-medical', exam:'badge-exam', platform:'badge-platform', biz:'badge-biz', negotiation:'badge-negotiation', exosome:'badge-exosome' };
   return `<span class="badge ${cls[tag]}">${tagLabels[tag]}</span>`;
 }
 
